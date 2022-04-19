@@ -1,0 +1,8 @@
+Functionalities that jvc should have:
+- jvc status
+- jvc save
+- jvc history
+- jvc remote
+
+Tasks:
+- Learn how to read a file's binary content, then hash it with SHA1 hash algorithm

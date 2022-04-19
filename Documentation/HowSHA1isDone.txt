@@ -1,0 +1,25 @@
+Step 1: Initialize H to a 160 bits. This is totally up to your choosing, that's why different people
+	doing the same SHA1 process produce different hashes.
+
+Step 2: Break the message into multiple chunks of 512 bits in length. If message length is not a multiple
+	of 512 bits, then add padding so that it is.
+
+Step 3:	For each 512 bits chunk of the message, pass it to the
+	compress function together with the previously calculated H to produce the new H.
+
+		Compress( 512bits-chunk, Last-160bits-H ) -> New-160bits-H
+
+	Repeat this until all the chunks have been iterated through.
+
+Step 4: Return the last value of H that the compress function calculated. This is the hash or digest of the message.
+
+
+How does the compress function work?
+
+	- It repeats the same process of calculation on the chunk and H 80 times and 
+
+
+Articles:
+SHA1: https://infosecwriteups.com/breaking-down-sha-1-algorithm-c152ed353de2
+	https://www.youtube.com/watch?v=DMtFhACPnTY&t=317s
+SHA3: https://infosecwriteups.com/breaking-down-sha-3-algorithm-70fe25e125b6
