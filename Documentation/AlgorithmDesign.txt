@@ -1,0 +1,45 @@
+cmk
+
+*cmk init
+
+- Create the .cmk folder
+- Create any meta data of the repository inside the .cmk folder
+
+
+
+*cmk status:
+
+- Recursively look through all files in the directory
+- For each file, hash the binary content.
+	+ If the hash is not found as the name of one of the blobs (should be stored somewhere in
+		the ".cmk" folder then:
+			* check to see if its filename appears in the most recent save (again, this list should be stored somewhere in .cmk)
+			* if the filename does appear, mark it as "modified"
+			* if the filename does not appear, mark it as "untracked"
+- Display the 2 lists of "modified" and "untracked" files on the terminal
+
+
+
+*cmk save:
+
+- Recursively look through all files and folders in the directory.
+	For each folder, including the working folder itself:
+		+ Hash the combination of hashes of everything it contains. If this generates a new hash, then the content of the folder has changed.
+		+ If the content of the folder has changed, create a new tree object that:
+			* Is named using some hash that reflects the content of that folder.
+			* Contains the "hashes", "names", and "object types" of all the "blobs" and "trees" IMMEDIATELY under that folder
+		
+	For each file:
+		+ Hash its binary content.
+		+ If it's a brand new hash, then the file is either "untracked" or "modified."
+		  If so, create a new "blob" file that:
+			* Is named using the hash
+			* Contains the binary content of the file
+
+	Return the last hash, which represents the content of the root directory of this save.
+		(this feeds into the next step)
+
+- Create a new "version" object that:
+	+ points to the "tree" object representing the latest version of the working directory (just created recursively)
+	+ (if this is not the initial save) points to the previous "version" object
+	+ points to the author? (is this neccessary?)

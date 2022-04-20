@@ -1,0 +1,327 @@
+/******************************************************************
+ * Note Author: Jeremy Duong
+ * Date: Dec 3rd, 2021
+ *
+ * I was trying to inspect the behaviors of git inside the ".git/objects"
+ * folder of a git repo when files and directories are added and modified,
+ * and when "git add ." and "git commit" are executed.
+
+ ******************************************************************/
+
+
+First, I git init the folder.
+
+Then, I added a file initialText.txt with the content:
+
+"Initial text"
+
+1. GIT ADD:
+
+After doing git add for initialText.txt, an object is created with the hash starting with:
+	d6986e4b...
+
+Using the command
+	git cat-file -p d6986e4b,
+
+the content of the file is shown:
+"Initial text"
+
+...without any mention of filename or anything else.
+
+Using the command
+	git cat-file -t d6986e4b
+
+...with the tag "-t" meaning "type", the type of the file is shown to be:
+
+	blob
+
+So, this is the blob object. And we learn that a blob file is created for every unique content every time you use git add.
+
+Next, we will make a commit:
+	git commit -m "initial commit"
+
+2. GIT COMMIT:
+
+After making the very first commit, 2 extra objects appear in .git/objects:
+	581d90b9...
+	ea8946ef...
+
+Let's inspect these 2 objects with git cat-file:
+
+First, let's look at the content and type of 581d90b9:
+git cat-file -p 581d90b9:
+	100644 blob d6986e4be7d56a4c5263ebd65c4d88673ac2b441    initialText.txt
+
+git cat-file -t 581d90b9:
+	tree
+
+So the first object is a TREE that holds:
+	- the content (blobs) and/or trees related to that commit
+	- the hash of each of the objects related to that commit
+	- and the filenames
+
+Now let's inspect ea8946ef:
+git cat-file -p ea8946ef:
+	tree 581d90b97666615937419ba43e8b02e6f95a3fce
+	author Jeremy Duong <jeremibq@gmail.com> 1638584865 -0700
+	committer Jeremy Duong <jeremibq@gmail.com> 1638584865 -0700
+
+	initial commit
+
+git cat-file -t ea8946ef:
+	commit
+
+
+3. ADD ANOTHER FILE:
+So, the second file is the a commit that points to the related tree
+
+Now, let's add a new file called secondText.txt with content "second text content"
+
+Again, 1 new object is created:
+	9bbe733f...
+
+git cat-file -p 9bbe733f:
+	second text content
+
+git cat-file -t 9bbe733f:
+	blob
+
+
+
+4. WHAT IF WE CHANGE initialText.txt?
+
+On the 2nd line of initialText.txt, let's add "another line of code in initialText.txt"
+	then git add .
+
+A new blob object is now created with hash 4105afc0. Interestingly, this file not only contain the changes made to initialText.txt,
+but the whole content of the file after the changes:
+
+git cat-file -p 4105afc0:
+	initial text
+	another line of code in initialText.txt
+
+So, what happened to the first blob that was created when initialText.txt was created?
+
+Let's inspect d6986e4b one more time:
+
+git cat-file -p d6986e4b
+	initial text
+
+So the first blob was still there and unchanged.
+
+This means that each blob is independent of the content of the file.
+
+	THEY ONLY SERVE TO STORE UNIQUE FILE STATES AND TO BE REFERENCED TO.
+
+
+5. SO WHAT HAPPENS NOW IF WE COMMIT?
+
+At this point, we have 2 staged changes:
+	- a new file "secondText.txt"
+	- and a modification of "firstText.txt"
+
+Let's commit these 2 changes:
+
+	git commit -m "the second commit"
+
+After this commit, 2 new objects are created:
+	- 9e3e5f89...
+	- 552a8575...
+
+git cat-file -p 9e3e5f89:
+	tree 552a857546b540fcd9923c4967cc91671f620701
+	parent ea8946ef59339b7eac7aa13695116e31483ffb52
+	author Jeremy Duong <jeremibq@gmail.com> 1638589054 -0700
+	committer Jeremy Duong <jeremibq@gmail.com> 1638589054 -0700
+
+	the second commit
+
+git cat-file -t 9e3e5f89:
+	commit
+
+git cat-file -p 552a8575:
+	100644 blob 4105afc049cccebc5f218f535f2cd2bf0e2f077e    initialText.txt
+	100644 blob 9bbe733fc6140a6ea1c51f4c126329a45a7e748e    secondText.txt
+
+git cat-file -t 552a8575:
+	tree
+
+So, after the second commit, we notice a few things:
+
+	- First, none of the objects previously created ever changed
+
+	- Second, it seems that the behavior of "git add ." (or at least one of its main behaviors) is to:
+
+		+ to check and see if there is any file (new or old) that provides a SHA1 hash different than all the BLOBS already created
+		+ if there are such files, create a new BLOB for each of those files' content. Thus, each blob represents a UNIQUE FILE STATE.
+
+	- Third, it seems every time there is a new commit, 2 new objects are created:
+		+ A tree object that points to all the blobs (files states) at the time the commit is made.
+			Notice that the file name of initialText.txt is the same, but the blob corresponding to it is 4105afc0,
+				which is the blob created after we add the 2nd line, NOT d6986e4b, which is the initial blob
+
+		+ A commit object which points to the new tree object, and the commit object immediately preceding it.
+
+
+6. LET'S INSPECT EVERYTHING AGAIN... LOL :))
+
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -p d6986e4b
+initial text
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -t 581d90b9
+tree
+
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -p 581d90b9
+100644 blob d6986e4be7d56a4c5263ebd65c4d88673ac2b441    initialText.txt
+
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -t ea8946ef
+commit
+
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -p ea8946ef
+tree 581d90b97666615937419ba43e8b02e6f95a3fce
+author Jeremy Duong <jeremibq@gmail.com> 1638584865 -0700
+committer Jeremy Duong <jeremibq@gmail.com> 1638584865 -0700
+
+initial commit
+
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -t 9bbe733f
+blob
+
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -p 9bbe733f
+second text content
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -t 4105afc0
+blob
+
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -p 4105afc0
+initial text
+another line of code in initialText.txt
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -t 9e3e5f89
+commit
+
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -p 9e3e5f89
+tree 552a857546b540fcd9923c4967cc91671f620701
+parent ea8946ef59339b7eac7aa13695116e31483ffb52
+author Jeremy Duong <jeremibq@gmail.com> 1638589054 -0700
+committer Jeremy Duong <jeremibq@gmail.com> 1638589054 -0700
+
+the second commit
+
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -t 552a8575
+	tree
+
+C:\Users\Jeremy Duong\Projects\Test\learningGit>git cat-file -p 552a8575
+	100644 blob 4105afc049cccebc5f218f535f2cd2bf0e2f077e    initialText.txt
+	100644 blob 9bbe733fc6140a6ea1c51f4c126329a45a7e748e    secondText.txt
+
+
+This intense inspection convinces me that:
+	WHEN AN OBJECT IS CREATED, IT WILL NEVER BE CHANGED OR DELETED (neither due to new commits, nor new adds).
+
+This is crucial to understanding how git manages the changes history.
+
+
+7. NOW, IF WE CREATE A NEW FOLDER, WILL THERE BE 2 MORE TREES WHEN WE COMMIT?
+
+Since a TREE seems to be an image of the directory structure at the time of the corresponding commit,
+
+	What new objects will be created if I create a new dirrectory, add a new file inside of it, and then make a third commit?
+
+	---> 	I expect to see:
+			- 1 new BLOB that represents the state of the new file
+			- 2 new TREE objects:
+				+ The first points to firstText.txt, secondText.txt, and the second TREE (and their SHA1 hashes and blobs)
+				+ The second TREE points to the new file (and its SHA1 hash)
+
+			- and 1 COMMIT object that points to the first new TREE.
+
+		...so I should see a total of 4 new objects.
+
+Let's find out if I'm right:
+
+	- First we create a new folder on the same level as initialText.txt and secondText.txt and name it "firstFolder"
+	- Inside "firstFolder", we create a new file called "thirdText.txt", and give it the one-line content: "third text content."
+		(As an interesting side note, if we create a new folder without any file inside of it, "git status" shows that nothing has changed.)
+
+- When "git add ." is executed, 1 new object appears:
+	fac1b2a6...
+
+git cat-file -t fac1b2a6:
+	blob
+
+git cat-file -p fac1b2a6
+	third text content.
+
+
+... The fact that there is only 1 new object and it's a blob shows that "git add ." really doesn't give a crap about the new folder, only new FILE STATES to be recorded as blobs.
+
+
+- Then we: git commit -m "the third commit: added new folder"
+YAYYYYYYYYYYY.. AHAHAAAAAA!!! lol whatever. but I was right!!! 3 new objects are created after the commit:
+	- 7de57dc5
+	- b06b88d0
+	- e50d5377
+
+Now, let's see if they're what I predicted they are: 1 COMMIT and 2 TREEs
+
+git cat-file -t 7de57dc5
+	commit
+git cat-file -p 7de57dc5
+	tree b06b88d07ad1a2125d27fb998fbb24a0e8b56059
+	parent 9e3e5f89852b7a7d89cb3b62a79b91f8a985c444
+	author Jeremy Duong <jeremibq@gmail.com> 1638593050 -0700
+	committer Jeremy Duong <jeremibq@gmail.com> 1638593050 -0700
+
+	the third commit: added new folder
+
+git cat-file -t b06b88d0
+	tree
+git cat-file -p b06b88d0
+	040000 tree e50d5377f7fa506addc32fb2ad7adc980eb783da    firstFolder
+	100644 blob 4105afc049cccebc5f218f535f2cd2bf0e2f077e    initialText.txt
+	100644 blob 9bbe733fc6140a6ea1c51f4c126329a45a7e748e    secondText.txt
+
+git cat-file -t e50d5377
+	tree
+git cat-file -p e50d5377
+	100644 blob fac1b2a67de0fe6f2e6c97e99aecaa0c8f13c074    thirdText.txt
+
+
+
+I'm a freaking genius lol :)) for understanding someone else' genius =.=
+
+There are 2 more important things to note here:
+
+	- First, in the first tree (b06b88d0) which represents the state of root directory at the time of the commit,
+		there is a reference to the second tree (e50d5377) which represents the folder "firstFolder"
+
+	- Second, in the last tree, we see a reference to the new blob for thirdText.txt: fac1b2a6,
+		which was the first thing created when we ran the "git add" command
+
+So yes, a total of 4 new objects: 1 BLOB, 2 TREEs and 1 COMMIT just as I predicted.
+
+
+8. CONCLUSIONS:
+	- There are 3 very important types of objects used in git's internal: BLOB, TREE, and COMMIT
+
+	- A BLOB is a FILE STATE of some file at some point in time and does not represent any particular file.
+		If there is a file (old or new) with a new file state, a new BLOB will be created for it.
+		But if there is a new file with the same file state as one of the existing files, no new blob will be created.
+
+	- BLOBS are created when "git add" is executed.	
+	
+
+	- A TREE represent a DIRECTORY STATE of some directory at some point in time.
+		Notice that a TREE represents the directory "state", not the directory itself.
+		This means that one directory can be represented by multiple TREEs, each tree represents its state at some point in time
+
+	- A TREE points to all the files (represented by the filenames) and their BLOBS (states, represented by their SHA1 hash) inside the directory it represents.
+	- A TREE points to all the directories (represented by their TREEs) and their states (represented by their SHA1 hash) inside the directory it represents.
+
+	- In short, a BLOB is a file state, and a TREE is a directory state.
+
+	- A COMMIT points to the TREE that represents the STATE of the root folder (the whole repository) at the time of the commit.
+	
+	- COMMITS and TREES are created when "git commit" is executed
+
+	- When "git commit" is executed there are always 1 COMMIT object created and at least 1 TREE (representing the whole repo) created
+
+:)

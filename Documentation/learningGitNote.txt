@@ -1,0 +1,20 @@
+git status:
+	- Check to see if any file maps to a completely new SHA1 hash
+	- If there are such files, display their path
+
+git add:
+	- Turn any newly created file into a BLOB
+	
+git commit:
+	- Create a new TREE object for the root directory
+	- Create a new TREE for EVERY NEW directory inside the root directory, OR whenever the content of a TREE has changed.
+		That is, a new tree is only created if any file inside a folder generates a new blob.
+		If the content of a folder remains the same as the previous commit, no new TREE is created for that folder.
+	- Create a new COMMIT object that points to the root directory TREE
+	
+
+Things I need to understand how to do:
+	- Reading/Writing binary files
+	- Hashing binary files with SHA1 into a sequence of (160bits (20bytes or 20 characters in C++))
+		and turn each nibble(4bits) into a Hex character --> name the BLOB of the file with that hex representation of the hash
+	- Compressing a file
