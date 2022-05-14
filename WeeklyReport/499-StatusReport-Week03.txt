@@ -1,0 +1,31 @@
+Name: Jeremy Duong
+Project Title: jvc (Jeremy's Version Control)
+
+Team Members: Jeremy Duong (Functional Analyst, Software Engineer, QA)
+
+Overall Status: "jvc status" algorithm analyzed in details. Code for smaller components implemented.
+		"jvc save" algorithm analyzed in details. Code for smaller componenets implemented.
+
+Number of hours worked since last update: 15 hours
+Number of hours worked on the project thus far: 24 hours
+Total number of hours anticipated for completion: 200 hours
+
+Accomplishments:
+- Figured out algorithm to quickly determine if a file has changed
+- SHA1 hash algorithm implemented
+
+Challenges:
+- The SHA1 run time can be improved. Currently it takes a very long time to hash a file especially when it's a large file.
+  If the project has a bunch of large files that are modified, it would take forever for "jvc save" to hash.
+  Maybe a wise thing to do is to use a different THREAD for each file that needs to be hashed so that the hashing can happen concurently?
+
+Plans / Goals for next week:
+- (PRIORITY) Research methods to traverse through all files in current directory.
+- Create data structures for SHA1 hash and "Diff" (a structure that allows for checking file's changes).
+
+Accountability plan: (What is your plan to keep yourself honest and follow through with the goals that you have outlined?)
+- Keep up with my weekly report. Make sure to include specific progress towards goals set.
+- Report the same thing to brother Manley.
+
+Other comments:
+- Need to be more strict with my 3hrs/day schedule :(

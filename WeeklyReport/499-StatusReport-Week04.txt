@@ -1,0 +1,33 @@
+Name: Jeremy Duong
+Project Title: jvc (Jeremy's Version Control)
+
+Team Members: Jeremy Duong (Functional Analyst, Software Engineer, QA)
+
+Overall Status:
+	- All small parts for the main functionalities have been analyzed, designed and implemented
+	- Small parts ready to be assembled into main functionalities
+
+Number of hours worked since last update: 15 hours
+Number of hours worked on the project thus far: 24 hours
+Total number of hours anticipated for completion: 200 hours
+
+Accomplishments:
+- (significant) Figured out how to create a BLOB object from content of a file and then recreate the file using the same BLOB (circled)
+- Cleaned up code for SHA1 hash and encapsulated all code related to hashing into a HashingUnit class
+
+Challenges:
+- The next challenge is to figure out how to efficiently traverse the directory and follow the TREE object at the same time,
+	while creating the appropriate COMMIT, TREE, and BLOB object. It is certainly doable, but what's the optimized way to do it?
+
+Plans / Goals for next week:
+- (PRIORITY) Refine and implement the main code for the "status" functionality
+- Finish planning how the version control database needs to be implemented.
+- Figure out how to create the TREE and COMMIT object.
+- (optional) Get started on implementing the "save" functionality.
+
+Accountability plan: (What is your plan to keep yourself honest and follow through with the goals that you have outlined?)
+- Keep up with my weekly report. Make sure to include specific progress towards goals set.
+- Report the same thing to brother Manley.
+
+Other comments:
+N/A

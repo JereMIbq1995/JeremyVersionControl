@@ -8,6 +8,23 @@ cmk
 
 
 *cmk status:
+Possible file/folder states: NEW, DELETED, MODIFIED
+
+- Look at the most recent commit and find the <hash_name> of the root tree.
+- If the most recent commit is NULL, push everything found from the top of the root to the NEW vector
+- Else:
+	RecursivelyExplore (currentPath, treeName, treeHash):
+		+ Loop through each line of the tree object:
+			* If a file or folder is not found in the current directory, push that filename into the DELETED vector
+			* If a folder found in the current directory, RecursivelyExplore(folderName, treeName, treeHash) that folder
+			* If a file is found in the current directory, check its content and compare it to the blob with the specified hash:
+				If it's different than its corresponding BLOB, then push it onto the MODIFIED vector.
+
+		+ Loop through each file/folder under the current folder:
+			* If a file is not found in the tree, push that filename onto the NEW vector and DO NOT explore that folder
+- Display the content of the 3 vectors NEW, DELETED, and MODIFIED to the terminal
+
+
 
 - Recursively look through all files in the directory
 - For each file, hash the binary content.

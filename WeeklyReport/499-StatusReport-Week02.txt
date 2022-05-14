@@ -1,0 +1,32 @@
+Name: Jeremy Duong
+Project Title: jvc (Jeremy's Version Control)
+
+Team Members: Jeremy Duong (Functional Analyst, Software Engineer, QA)
+
+Overall Status: Initial. Main functionalities analyzed and initially designed
+
+Number of hours worked since last update: 3 hours
+Number of hours worked on the project thus far: 9 hours
+Total number of hours anticipated for completion: 200 hours
+
+Accomplishments:
+- Finished project proposal
+- I actually didn't get much done this week on the project itself because of a big interview that I had to prepare for.
+  But I'm planning to spend about 25 hours next week for the project to make up the time I lost.
+
+Challenges:
+I'm still having the same challenges as last week:
+The most difficult part as of right now is to figure out a way to traverse through all files in
+the repository. It looks like recursion must be used to do so. However, I'm not exactly sure how
+to do that yet. Further research must be done to figure this out.
+
+Plans / Goals for next week:
+- Research methods to traverse through all files in current directory.
+- Research the sha1 hashing algorithm.
+
+Accountability plan: (What is your plan to keep yourself honest and follow through with the goals that you have outlined?)
+- Keep up with my weekly report. Make sure to include specific progress towards goals set.
+- Report the same thing to brother Manley.
+
+Other comments:
+- An extra 10 hours must be spent next week on the project to catch up
