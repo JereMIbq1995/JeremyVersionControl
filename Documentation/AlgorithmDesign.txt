@@ -24,7 +24,7 @@ Possible file/folder states: NEW, DELETED, MODIFIED
 			* If a file is not found in the tree, push that filename onto the NEW vector and DO NOT explore that folder
 - Display the content of the 3 vectors NEW, DELETED, and MODIFIED to the terminal
 
-
+__________________
 
 - Recursively look through all files in the directory
 - For each file, hash the binary content.
