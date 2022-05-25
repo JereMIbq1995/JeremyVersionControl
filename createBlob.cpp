@@ -167,7 +167,7 @@ void createBlob(string fileName, string blobName, char objectType) {
     fstream fout;
     fstream fin;
 
-    fout.open(blobName, ios::out | ios::binary);
+    fout.open(".jvc/obj/blob/" + blobName, ios::out | ios::binary);
     fin.open(fileName, ios::in | ios::binary);
     
     char* objType = (char*)&objectType;
@@ -186,12 +186,13 @@ void createBlob(string fileName, string blobName, char objectType) {
     fin.close();
 }
 
-void createFileFromBlob(string blobName, string fileName) {
+void createFileFromBlob(string blobName, string fileName)
+{
 
     fstream fout;
     fstream fin;
 
-    fin.open(blobName, ios::in | ios::binary);
+    fin.open(".jvc/obj/blob/" + blobName, ios::in | ios::binary);
     fout.open(fileName, ios::out | ios::binary);
 
     if (fout.is_open() && fin.is_open())
@@ -223,6 +224,32 @@ void createFileFromBlob(string blobName, string fileName) {
 }
 
 /*
+    Helper function: return the copy file name
+*/
+string getCopyFileName(string fileName) {
+    string copyFileName = "";
+    int periodPos = 0;
+    for (int i = fileName.size() - 1; i >= 0; i--)
+    {
+        if (fileName[i] == '.')
+        {
+            periodPos = i;
+            break;
+        }
+    }
+    for (int i = 0; i < periodPos; i++)
+    {
+        copyFileName.push_back(fileName[i]);
+    }
+    copyFileName = copyFileName + "_re";
+    for (int i = periodPos; i < fileName.size(); i++)
+    {
+        copyFileName.push_back(fileName[i]);
+    }
+    return copyFileName;
+}
+
+/*
     Takes in a filename and create a blob for its content
 */
 int main() {
@@ -240,5 +267,6 @@ int main() {
     char objType = 'b';
     createBlob(fileName, fileDigest, objType);
 
-    createFileFromBlob(fileDigest, "20200104_094655_re.jpg");
+    string copyFileName = getCopyFileName(fileName);
+    createFileFromBlob(fileDigest, copyFileName);
 } 
