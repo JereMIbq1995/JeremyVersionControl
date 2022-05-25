@@ -25,6 +25,9 @@ int main() {
 
     filesystem::create_directory(".jvc/head");
     filesystem::create_directory(".jvc/obj");
+    filesystem::create_directory(".jvc/obj/save");
+    filesystem::create_directory(".jvc/obj/tree");
+    filesystem::create_directory(".jvc/obj/blob");
 
     // Initialize the .jvc/head/master file (OR we can just leave it):
     // char firstCommit[41] = "NULL\0";
