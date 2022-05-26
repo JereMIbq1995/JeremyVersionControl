@@ -24,6 +24,9 @@ int main() {
     SetFileAttributesA(".jvc", FILE_ATTRIBUTE_HIDDEN);
 
     filesystem::create_directory(".jvc/idxSup");
+    fstream fout;
+    fout.open(".jvc/idxSup/commit", ios::out);
+    fout << 0;
 
     filesystem::create_directory(".jvc/head");
     
