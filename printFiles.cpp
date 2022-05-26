@@ -16,11 +16,13 @@ void displayDirectory(filesystem::path current, int tabs) {
     for (const filesystem::directory_entry &dir_entry : myIterator)
     {
         std::string path_string(dir_entry.path().filename().u8string());
-        if (path_string != ".jvc") {
+        if (path_string != ".jvc" && path_string != ".git" && path_string != "bin" && path_string != ".vscode")
+        {
             for (int i = 0; i < tabs; i++) {
                 cout << "\t";
             }
-            cout << path_string << "   (" << dir_entry.path() << ")" << "\n";
+            cout << dir_entry.path().filename().u8string() << endl;
+            // cout << path_string << "   (" << dir_entry.path() << ")" << "\n";
 
             if (dir_entry.is_directory())
             {
@@ -31,6 +33,6 @@ void displayDirectory(filesystem::path current, int tabs) {
 }
 
 int main() {
-    displayDirectory(filesystem::path("./"), 0);
+    displayDirectory(filesystem::path(".\\"), 0);
     return 0;
 }
