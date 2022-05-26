@@ -23,7 +23,10 @@ int main() {
     filesystem::create_directory(".jvc");
     SetFileAttributesA(".jvc", FILE_ATTRIBUTE_HIDDEN);
 
+    filesystem::create_directory(".jvc/idxSup");
+
     filesystem::create_directory(".jvc/head");
+    
     filesystem::create_directory(".jvc/obj");
     filesystem::create_directory(".jvc/obj/save");
     filesystem::create_directory(".jvc/obj/tree");
