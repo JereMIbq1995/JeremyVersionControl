@@ -41,6 +41,44 @@ private:
         return (num << pos) | (num >> (32 - pos));
     }
 
+    void hash512(char c[])
+    {
+        // The 80 rounds of computation
+        bool HSwitch = true;
+        int roundNumber = 0;
+        for (int i = 1; i <= 5; i++)
+        {
+            for (int j = 0; j < 16; j++)
+            {
+                int itOutOf5 = roundNumber / 20;
+
+                // Read the next 32 bits chunk
+                uint32_t *chunk = (uint32_t *)&(c[j * 4]);
+
+                // Hashing...
+                if (HSwitch)
+                {
+                    H2[0] = (F(itOutOf5, H1[1], H1[2], H1[3]) + H1[4] + rotl(H1[0], 5) + *chunk + K.at(itOutOf5));
+                    H2[1] = H1[0];
+                    H2[2] = rotl(H1[1], 30);
+                    H2[3] = H1[2];
+                    H2[4] = H1[3];
+                }
+                else
+                {
+                    H1[0] = (F(itOutOf5, H2[1], H2[2], H2[3]) + H2[4] + rotl(H2[0], 5) + *chunk + K.at(itOutOf5));
+                    H1[1] = H2[0];
+                    H1[2] = rotl(H2[1], 30);
+                    H1[3] = H2[2];
+                    H1[4] = H2[3];
+                }
+
+                roundNumber++;
+                HSwitch = HSwitch ? false : true;
+            }
+        }
+    }
+
 public:
     HashingUnit()
     {
@@ -92,43 +130,7 @@ public:
         Turn original string into hashed binary string
         Return the hashed string in Hex
     */
-    void hash512(char c[])
-    {
-        // The 80 rounds of computation
-        bool HSwitch = true;
-        int roundNumber = 0;
-        for (int i = 1; i <= 5; i++)
-        {
-            for (int j = 0; j < 16; j++)
-            {
-                int itOutOf5 = roundNumber / 20;
-
-                // Read the next 32 bits chunk
-                uint32_t *chunk = (uint32_t *)&(c[j * 4]);
-
-                // Hashing...
-                if (HSwitch)
-                {
-                    H2[0] = (F(itOutOf5, H1[1], H1[2], H1[3]) + H1[4] + rotl(H1[0], 5) + *chunk + K.at(itOutOf5));
-                    H2[1] = H1[0];
-                    H2[2] = rotl(H1[1], 30);
-                    H2[3] = H1[2];
-                    H2[4] = H1[3];
-                }
-                else
-                {
-                    H1[0] = (F(itOutOf5, H2[1], H2[2], H2[3]) + H2[4] + rotl(H2[0], 5) + *chunk + K.at(itOutOf5));
-                    H1[1] = H2[0];
-                    H1[2] = rotl(H2[1], 30);
-                    H1[3] = H2[2];
-                    H1[4] = H2[3];
-                }
-
-                roundNumber++;
-                HSwitch = HSwitch ? false : true;
-            }
-        }
-    }
+    
 
     string hashFileContent(string fileName)
     {
