@@ -44,11 +44,9 @@ int main() {
     cout << "Enter the name of the file: ";
     getline(cin, fileName);
 
-    string fileDigest = hashingUnit.hashFileContent(fileName);
-    cout << "Hashed content of '" << fileName << "' is: " << fileDigest << "\n";
-
-    blobCreator.createBlob(fileName);
+    string blobName = blobCreator.createBlob(fileName);
+    cout << "Hashed content of '" << fileName << "' is: " << blobName << "\n";
 
     string copyFileName = getCopyFileName(fileName);
-    blobCreator.createFileFromBlob(fileDigest, copyFileName);
+    blobCreator.createFileFromBlob(blobName, copyFileName);
 } 
