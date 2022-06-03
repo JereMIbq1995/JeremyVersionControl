@@ -23,30 +23,25 @@ int main() {
     filesystem::create_directory(".jvc");
     SetFileAttributesA(".jvc", FILE_ATTRIBUTE_HIDDEN);
 
+    // Creating index supplier for versions and trees
     filesystem::create_directory(".jvc/idxSup");
     fstream fout;
-    fout.open(".jvc/idxSup/commit", ios::out);
+    fout.open(".jvc/idxSup/version", ios::out);
     fout << 0;
+    fout.close();
+    fout.open(".jvc/idxSup/tree", ios::out);
+    fout << 0;
+    fout.close();
 
+    // Create a directory that keep track of most recent commit
+    // of each branch
     filesystem::create_directory(".jvc/head");
-    
+
+    // Create a firectory to keep track of all db objects
     filesystem::create_directory(".jvc/obj");
-    filesystem::create_directory(".jvc/obj/save");
+    filesystem::create_directory(".jvc/obj/version");
     filesystem::create_directory(".jvc/obj/tree");
     filesystem::create_directory(".jvc/obj/blob");
-
-    // Initialize the .jvc/head/master file (OR we can just leave it):
-    // char firstCommit[41] = "NULL\0";
-
-    // ofstream fout;
-    // fout.open("./.jvc/head/master");
-
-    // if (fout.is_open()) {
-    //     fout.write(firstCommit, 41);
-    // }
-    // else {
-    //     cout << "Cannot open file!\n";
-    // }
 
     return 0;
 }
