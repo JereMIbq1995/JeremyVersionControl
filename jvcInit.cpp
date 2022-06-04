@@ -43,5 +43,7 @@ int main() {
     filesystem::create_directory(".jvc/obj/tree");
     filesystem::create_directory(".jvc/obj/blob");
 
+    cout << "Initialized current directory as a jvc repository." << endl;
+
     return 0;
 }
