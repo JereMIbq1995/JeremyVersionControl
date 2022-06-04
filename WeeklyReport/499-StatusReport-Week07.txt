@@ -1,0 +1,37 @@
+Name: Jeremy Duong
+Project Title: jvc (Jeremy's Version Control)
+
+Team Members: Jeremy Duong (Functional Analyst, Software Engineer, QA)
+
+Overall Status:
+	- All small parts for the main functionalities have been analyzed, designed and implemented
+	- "jvc save" (commit) successfully traverses through everything in the directory and create blobs, trees, and saves (commits)
+	for every initial new file.
+		This means that "jvc save" is about 50% completed.
+		Once "jvc save" and "jvc status" are completed, the rest of the project will be much easier
+	- I decided not to finish "jvc status" this week but move on to "jvc save" instead since its the functionality
+		that creates the "blob", "tree", and "save" objects which "jvc status" will need to reference to do its job.
+
+Number of hours worked since last update: 12 hours (all spent on the SRS doc)
+Number of hours worked on the project thus far: 57 hours
+Total number of hours anticipated for completion: 200 hours
+
+Accomplishments:
+- This week has been a little crazy for me socially so I actually did not get any code written (T_T)
+- 16 pages of SRS document is completed with great detail. It's pretty beautiful by the time I'm done. I hope you like it!
+
+Challenges (Same as last week):
+- The next challenge is to implement the other halves of "jvc save" and "jvc status", which require every file to be compared to its blob.
+  This can prove a little challenging because if not implemented well, the run time might suffer quite badly.
+
+Plans / Goals for next week (Same as last week):
+- (PRIORITY) Finish the other halves of "jvc save" and "jvc status"
+- Organize code into a more object oriented style
+- Complete the SRS document
+
+Accountability plan: (What is your plan to keep yourself honest and follow through with the goals that you have outlined?)
+- Keep up with my weekly report. Make sure to include specific progress towards goals set.
+- Report the same thing to brother Manley.
+
+Other comments:
+- Really need to get some new code written for jvc save and jvc status
