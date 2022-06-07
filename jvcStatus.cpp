@@ -5,7 +5,13 @@
 #include <fstream>
 #include <vector>
 #include <set>
+#include <map>
 using namespace std;
+
+struct FileEntry {
+    string type;
+    string codeName;
+};
 
 void traverseAll(filesystem::path currentPath, vector<string> &newFiles, const set<string> &ignores) {
 
@@ -23,10 +29,129 @@ void traverseAll(filesystem::path currentPath, vector<string> &newFiles, const s
     }
 }
 
+void getTreeEntries(map<string, FileEntry> &entries, string treeName) {
+    fstream fin;
+    fin.open(".jvc/obj/tree/" + treeName);
+    string entryName;
+    FileEntry entry;
+
+    if (fin.is_open())
+    {
+        while (fin >> entry.type) {
+            fin >> entry.codeName;
+            fin >> entryName;
+
+            entries.insert(pair(entryName, entry));
+        }
+    }
+    else {
+        cout << "Could not open file " << treeName << endl;
+    }
+    fin.close();
+}
+
+bool diff(string filePath, string blobName) {
+
+    ifstream fin1;
+    ifstream fin2;
+
+    fin1.open(filePath, ios::in | ios::binary);
+    fin2.open(".jvc/obj/blob/" + blobName, ios::in | ios::binary);
+
+    char c1 = ' ';
+    char c2 = ' ';
+
+    fin1.seekg(0, fin1.end);
+    fin2.seekg(0, fin2.end);
+    int size1 = fin1.tellg();
+    int size2 = fin2.tellg();
+    // cout << "size1 - size2:  " << size1 << " - " << size2 << endl;
+
+    if (size1 != size2)
+    {
+        return true;
+    }
+    else
+    {
+        fin1.seekg(0, fin1.beg);
+        fin2.seekg(0, fin2.beg);
+
+        while (fin1.get(c1) && fin2.get(c2))
+        {
+            if (c1 != c2)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void traverseTreeWithDir(filesystem::path currentPath, string treeName, vector<string> &newFiles, vector<string> &deletedFiles,
                          vector<string> &modifiedFiles, const set<string> &ignores)
 {
+    // Get all the fileNames and foldernames mentioned in the current tree
+    map<string, FileEntry> entries;
+    getTreeEntries(entries, treeName);
+
     // TODO: Implement this...
+    filesystem::directory_iterator it(currentPath);
+
+    // for anything that exists in currentPath:
+    for (const filesystem::directory_entry dir_entry : it)
+    {
+        // If the folder is not one of the ignored ones, explore it
+        if (ignores.find(dir_entry.path().filename().u8string()) == ignores.end())
+        {
+            filesystem::path entry_path = dir_entry.path();
+            // If it's not in the tree, add to NEW
+            map<string, FileEntry>::iterator matchPos = entries.find(entry_path.filename().u8string());
+            if (matchPos == entries.end())
+            {
+                newFiles.push_back(entry_path.u8string());
+            }
+            // If it's also in the tree:
+            else
+            {
+                // If it's a folder, recursively call traverseTreeWithDir on the path and the treeName
+                if (dir_entry.is_directory())
+                {
+                    traverseTreeWithDir(entry_path, (matchPos->second).codeName, newFiles, deletedFiles, modifiedFiles, ignores);
+                }
+                // If it's a file, compare content, if different, add to MODIFIED
+                else
+                {
+                    if (diff(dir_entry.path().u8string(), matchPos->second.codeName))
+                    {
+                        modifiedFiles.push_back(entry_path.u8string());
+                    }
+                }
+            }
+        }
+    }
+
+    // If something exists in the tree, but not in the currentPath, add to DELETED
+    for (auto const &item : entries)
+    {
+        bool notFoundInCurrent = true;
+        filesystem::directory_iterator tempDirIt(currentPath);
+        for (const filesystem::directory_entry dir_entry : tempDirIt)
+        {
+            if (item.first == dir_entry.path().filename().u8string())
+            {
+                notFoundInCurrent = false;
+                break;
+            }
+        }
+        if (notFoundInCurrent)
+        {
+            string separator = "\\";
+            if (currentPath.u8string() == ".\\") {
+                separator = "";
+            }
+            deletedFiles.push_back(currentPath.u8string() + separator + item.first);
+        }
+    }
 }
 
 void getStatus(filesystem::path currentPath, vector<string> &newFiles, vector<string> &deletedFiles,
@@ -51,15 +176,32 @@ void getStatus(filesystem::path currentPath, vector<string> &newFiles, vector<st
         if (fin.is_open()) {
 
             // Read the most recent commit's hashed name
-            int commitIndex;
-            fin.read((char*) &commitIndex, 4);
-            
-            // TODO: Get the tree from the commit object
-            string treeHashedName = "";
+            string commitIndex;
+            fin >> commitIndex;
 
-            // TODO: Traverse the tree and the current directory together
-            traverseTreeWithDir(filesystem::path(currentPath), treeHashedName, newFiles, deletedFiles, modifiedFiles, ignores);
+            // TODO: Get the tree from the commit object
+            ifstream commitObjIn;
+            commitObjIn.open("./.jvc/obj/version/" + commitIndex);
+
+            if (commitObjIn.is_open())
+            {
+                string parent;
+                commitObjIn >> parent;
+                string treeName = "";
+                commitObjIn >> treeName;
+
+                // TODO: Traverse the tree and the current directory together
+                traverseTreeWithDir(filesystem::path(currentPath), treeName, newFiles, deletedFiles, modifiedFiles, ignores);
+            }
+            else {
+                cout << "Could not open commit object" << endl;
+            }
+            commitObjIn.close();
         }
+        else {
+            cout << "Could not open branch file" << endl;
+        }
+
 
         fin.close();
     }
@@ -78,7 +220,46 @@ void getIgnores(set<string> &ignores) {
     }
 }
 
-int main() {
+void displayResult(const vector<string> &newFiles, const vector<string> &deletedFiles, const vector<string> &modifiedFiles) {
+    
+    int nSize = newFiles.size();
+    int dSize = deletedFiles.size();
+    int mSize = modifiedFiles.size();
+
+    if (nSize > 0)
+    {
+        cout << "NEW files:\n";
+        for (const string newFile : newFiles)
+        {
+            cout << "\t\033[31m new: " << newFile << "\033[0m\n";
+        }
+    }
+
+    if (mSize > 0)
+    {
+        cout << "MODIFIED files:\n";
+        for (const string modifiedFile : modifiedFiles)
+        {
+            cout << "\t\033[31m modified: " << modifiedFile << "\033[0m\n";
+        }
+    }
+
+    if (dSize > 0)
+    {
+        cout << "DELETED files:\n";
+        for (const string deletedFile : deletedFiles)
+        {
+            cout << "\t\033[31m deleted: " << deletedFile << "\033[0m\n";
+        }
+    }
+
+    if (nSize + mSize + dSize == 0) {
+        cout << "No changes detected since last save." << endl;
+    }
+}
+
+int main()
+{
 
     // Prepare the 3 categories of files
     vector<string> newFiles;
@@ -92,13 +273,8 @@ int main() {
     // Meat and butter of the functionality
     getStatus(".\\", newFiles, deletedFiles, modifiedFiles, ignores);
 
-
     // Print out all untracked files
-    cout << "Untracked files:\n";
-
-    for (const string newFile : newFiles) {
-        cout << "\t\033[31m new: " << newFile << "\033[0m\n";
-    }
+    displayResult(newFiles, deletedFiles, modifiedFiles);
 
     return 0;
 }
