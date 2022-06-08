@@ -1,0 +1,6 @@
+// <type> <index/hash> <directory_name>
+
+TREE                                              0          SeniorProject
+TREE                                              1          Documentation
+BLOB       1234123412341234123412341234123412341234          file1.txt
+BLOB       2345123423451234234512342345123423451234          file2.txt

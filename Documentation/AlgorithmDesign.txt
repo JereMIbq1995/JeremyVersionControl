@@ -1,19 +1,21 @@
-cmk
+jvc
 
-*cmk init
+*jvc init
 
-- Create the .cmk folder
-- Create any meta data of the repository inside the .cmk folder
+- Create the .jvc folder
+- Create any meta data of the repository inside the .jvc folder
 
 
 
-*cmk status:
+*jvc status:
 Possible file/folder states: NEW, DELETED, MODIFIED
 
-- Look at the most recent commit and find the <hash_name> of the root tree.
 - If the most recent commit is NULL, push everything found from the top of the root to the NEW vector
 - Else:
-	RecursivelyExplore (currentPath, treeName, treeHash):
+	Look at the most recent commit and find the <tree-index> of the root tree.
+	RecursivelyExplore (currentPath, currentTreeIndex):
+		+ Put all files in the currentPath in a dir_set
+		+ Put all files in the currentTreeObject in a tree_set
 		+ Loop through each line of the tree object:
 			* If a file or folder is not found in the current directory, push that filename into the DELETED vector
 			* If a folder found in the current directory, RecursivelyExplore(folderName, treeName, treeHash) that folder
@@ -29,15 +31,15 @@ __________________
 - Recursively look through all files in the directory
 - For each file, hash the binary content.
 	+ If the hash is not found as the name of one of the blobs (should be stored somewhere in
-		the ".cmk" folder then:
-			* check to see if its filename appears in the most recent save (again, this list should be stored somewhere in .cmk)
+		the ".jvc" folder then:
+			* check to see if its filename appears in the most recent save (again, this list should be stored somewhere in .jvc)
 			* if the filename does appear, mark it as "modified"
 			* if the filename does not appear, mark it as "untracked"
 - Display the 2 lists of "modified" and "untracked" files on the terminal
 
 
 
-*cmk save:
+*jvc save:
 
 - Recursively look through all files and folders in the directory.
 	For each folder, including the working folder itself:
