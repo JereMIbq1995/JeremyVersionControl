@@ -75,6 +75,16 @@ public:
         fin.close();
     }
 
+    void createTreeFromVector(string treeName, const vector<string> entries) {
+        fstream fout;
+        fout.open(".jvc/obj/tree/" + treeName, ios::out);
+        
+        for (auto entry : entries) {
+            fout << entry << "\n";
+        }
+        fout.close();
+    }
+
 };
 
 #endif
