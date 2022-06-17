@@ -7,11 +7,11 @@
 #include <set>
 #include "BlobCreator.h"
 #include "FileEntry.h"
-#include "ObjectsReader.h"
+#include "JvcDao.h"
 using namespace std;
 
 BlobCreator blobCreator;
-ObjectReader objReader;
+JvcDao objReader;
 
 // type: 1 = tree, anything else = version
 // get the next usable index from the appropriate index supplier
