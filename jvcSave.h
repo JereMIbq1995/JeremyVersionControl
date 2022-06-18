@@ -12,6 +12,7 @@
 #include "FileEntry.h"
 #include "JvcDao.h"
 #include "IndexSupplier.h"
+#include "Version.h"
 using namespace std;
 
 
@@ -234,25 +235,26 @@ private:
             if (mrVersionIndex != "NULL")
             {
                 // TODO: Get the tree from the version object
-                ifstream versionObjIn;
-                versionObjIn.open("./.jvc/obj/version/" + mrVersionIndex);
+                Version version = jvcDao.getVersion(mrVersionIndex);
+                // ifstream versionObjIn;
+                // versionObjIn.open("./.jvc/obj/version/" + mrVersionIndex);
 
-                if (versionObjIn.is_open())
-                {
-                    string parent;
-                    string treeName;
-                    versionObjIn >> parent;
-                    versionObjIn >> treeName;
-
+                // if (versionObjIn.is_open())
+                // {
+                //     string parent;
+                //     string treeName;
+                //     versionObjIn >> parent;
+                //     versionObjIn >> treeName;
+                if (version.versionIndex != "error") {
                     // TODO: Traverse the tree and the current directory together
-                    string newTreeName = traverseTreeWithDir(currentPath, treeName, ignores);
-                    if (newTreeName != treeName)
+                    string newTreeName = traverseTreeWithDir(currentPath, version.treeIndex, ignores);
+                    if (newTreeName != version.treeIndex)
                     {
                         // Create new version object using the given treeName
                         int newVersionIndex = idxSplr.getNextIndex(0);
 
                         // Creating a new version object
-                        jvcDao.createVersionObject(to_string(newVersionIndex), mrVersionIndex, newTreeName, "Version " + newVersionIndex);
+                        jvcDao.createVersionObject(to_string(newVersionIndex), mrVersionIndex, newTreeName, "Version " + to_string(newVersionIndex));
 
                         // Update head/master
                         jvcDao.updateHead("master", to_string(newVersionIndex));
@@ -266,7 +268,6 @@ private:
                 {
                     cout << "Could not open version object" << endl;
                 }
-                versionObjIn.close();
             }
             else
             {

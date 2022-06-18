@@ -3,6 +3,8 @@
 #include <fstream>
 #include <filesystem>
 #include <string>
+#include <set>
+#include <map>
 #include "FileEntry.h"
 #include "Version.h"
 using namespace std;
@@ -67,7 +69,7 @@ public:
     
     // Head
     void initHead(string branch, string versionIndex) {
-        if (filesystem::exists("./.jvc/head/" + branch))
+        if (!filesystem::exists("./.jvc/head/" + branch))
         {
             fstream fout;
             fout.open("./.jvc/head/" + branch, ios::out);
@@ -95,8 +97,8 @@ public:
 
     void updateHead(string branch, string newVersion) {
         fstream fout;
+        fout.open("./.jvc/head/" + branch, ios::out | ios::trunc);
         if (fout.is_open()) {
-            fout.open("./.jvc/head/" + branch, ios::out | ios::trunc);
             fout << newVersion;
         }
         else {
@@ -109,6 +111,7 @@ public:
     void createVersionObject(string versionIndex, string parentVersion, string treeIndex, string message) {
         fstream fout;
         fout.open("./.jvc/obj/version/" + versionIndex, ios::out);
+        cout << message << "\n";
         if (fout.is_open()) {
             fout << parentVersion << "\n"
                 << treeIndex << "\n"
@@ -123,19 +126,21 @@ public:
     Version getVersion(string versionIndex) {
         
         Version version;
-
         ifstream fin;
         fin.open("./.jvc/obj/version/" + versionIndex);
         if (fin.is_open()) {
             version.versionIndex = versionIndex;
             fin >> version.parentVersion;
             fin >> version.treeIndex;
-            getline(fin, version.message);
             fin.ignore();
+            getline(fin, version.message);
         }
         else {
+            version.versionIndex = "error";
             cout << "Error: could not open version object for version '" << versionIndex << "'.\n";
         }
+        fin.close();
+        return version;
         
     }
     
