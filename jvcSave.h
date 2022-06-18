@@ -227,7 +227,6 @@ private:
         // If the version tracker for the current branch exists
         else
         {
-            // TODO: traverse and compare file to its blob...
 
             // Read the most recent version's hashed name
             string mrVersionIndex = jvcDao.getHead("master");
@@ -236,15 +235,7 @@ private:
             {
                 // TODO: Get the tree from the version object
                 Version version = jvcDao.getVersion(mrVersionIndex);
-                // ifstream versionObjIn;
-                // versionObjIn.open("./.jvc/obj/version/" + mrVersionIndex);
-
-                // if (versionObjIn.is_open())
-                // {
-                //     string parent;
-                //     string treeName;
-                //     versionObjIn >> parent;
-                //     versionObjIn >> treeName;
+                
                 if (version.versionIndex != "error") {
                     // TODO: Traverse the tree and the current directory together
                     string newTreeName = traverseTreeWithDir(currentPath, version.treeIndex, ignores);
