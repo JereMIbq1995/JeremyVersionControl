@@ -1,3 +1,5 @@
+#ifndef JVC_INIT
+#define JVC_INIT
 /*
     jvc init:
 
@@ -57,3 +59,4 @@ public:
         std::cout << "Initialized current directory as a jvc repository." << std::endl;
     }
 };
+#endif

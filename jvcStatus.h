@@ -1,3 +1,6 @@
+#ifndef JVC_STATUS
+#define JVC_STATUS
+
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -245,3 +248,5 @@ public:
         displayResult(newFiles, deletedFiles, modifiedFiles);
     }
 };
+
+#endif
