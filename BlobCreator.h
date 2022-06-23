@@ -50,12 +50,18 @@ public:
         return blobName;
     }
 
-    void createFileFromBlob(string blobName, string filePath) {
+    void createFileFromBlob(string blobName, string filePath, bool overwrite = false) {
         fstream fout;
         fstream fin;
 
         fin.open(".jvc/obj/blob/" + blobName, ios::in | ios::binary);
-        fout.open(filePath, ios::out | ios::binary);
+        if (overwrite)
+        {
+            fout.open(filePath, ios::out | ios::binary | ios::trunc);
+        }
+        else {
+            fout.open(filePath, ios::out | ios::binary);
+        }
 
         if (fout.is_open() && fin.is_open())
         {
