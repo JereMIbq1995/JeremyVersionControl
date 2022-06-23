@@ -1,0 +1,36 @@
+Name: Jeremy Duong
+Project Title: jvc (Jeremy's Version Control)
+
+Team Members: Jeremy Duong (Functional Analyst, Software Engineer, QA)
+
+Overall Status:
+	10/17 must-have requirements completed (But the most important and difficult ones are done. Other requirements are superficial)
+	0/4 stretch requirements completed
+
+Number of hours worked since last update: 20 hours
+Number of hours worked on the project thus far: 90 hours
+Total number of hours anticipated for completion: 200 hours
+
+Accomplishments:
+- Finished "jvc save"
+- Encapsulated all implemented functionalities to be object-oriented
+- Encapsulated all helper functions into appropriate classes (object-oriented)
+- Wrote the main function (entry point of the program which ties all functionalities together)
+
+Challenges:
+- If created trees are named based on indices instead of hashed content, space might be wasted to store duplicated trees only with different name.
+  The challenge is to figure out a way to create tree content and then hash it to see if there's any difference between it and
+  already existing trees.
+- Figure out how to separate header files from .cpp implementations
+- Figure out how to neatly compile the whole project using make file
+
+Plans / Goals for next week (Same as last week):
+- (PRIORITY) Implement and finish "jvc history"
+- (IMPORTANT) Get started on "jvc revert"
+
+Accountability plan: (What is your plan to keep yourself honest and follow through with the goals that you have outlined?)
+- Keep up with my weekly report. Make sure to include specific progress towards goals set.
+- Report the same thing to brother Manley.
+
+Other comments:
+- Everything will be done in an object oriented fashing from now on.
