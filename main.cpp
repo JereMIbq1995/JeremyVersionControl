@@ -8,6 +8,7 @@
 #include "jvcInit.h"
 #include "jvcStatus.h"
 #include "jvcSave.h"
+#include "jvcRevert.h"
 
 
 void init() {
@@ -37,8 +38,8 @@ void revert(int argc, char* argv[]) {
         return;
     }
     
-    std::string version(argv[2]);
-    std::cout << "Reverting to version " << version << "...\n";
+    JvcRevert jvcReverter;
+    jvcReverter.execute(std::string(argv[2]));
 }
 
 void history() {
