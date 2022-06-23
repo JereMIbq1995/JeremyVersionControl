@@ -203,6 +203,26 @@ private:
 
 public:
 
+    bool unsavedChangesExist() {
+        // Prepare the 3 categories of files
+        vector<string> newFiles;
+        vector<string> deletedFiles;
+        vector<string> modifiedFiles;
+
+        // Prepare the ignores set
+        set<string> ignores;
+        objReader.getIgnores(ignores);
+
+        // Meat and butter of the functionality
+        getStatus(".\\", newFiles, deletedFiles, modifiedFiles, ignores);
+        if (newFiles.size() + deletedFiles.size() + modifiedFiles.size() > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     void execute()
     {
         if (!std::filesystem::exists(".jvc")) {
