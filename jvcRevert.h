@@ -79,7 +79,8 @@ public:
             return;
         }
         else {
-            cout << "Reverting to version " << version << ": '" << versionObj.message << "'\n";
+            cout << "HEAD is updated to version " << version << ": '" << versionObj.message << "'\n";
+            objReader.updateHead("master", version);
             recreateTree(".\\", versionObj.treeIndex, ignores);
         }
     }
