@@ -14,6 +14,7 @@ public:
     // Ignores
     void getIgnores(set<string> &ignores)
     {
+        ignores.insert(".jvc");
         if (filesystem::exists("./.jvcIgnore"))
         {
             ifstream fin;

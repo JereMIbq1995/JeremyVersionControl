@@ -22,23 +22,7 @@ class JvcSave {
 private:
     IndexSupplier idxSplr;
     BlobCreator blobCreator;
-    JvcDao jvcDao;
-
-    void getIgnores(set<string> &ignores)
-    {
-        if (filesystem::exists("./.jvcIgnore"))
-        {
-            ifstream fin;
-            fin.open("./.jvcIgnore");
-
-            string fileName;
-            while (getline(fin, fileName))
-            {
-                ignores.insert(fileName);
-            }
-            fin.close();
-        }
-    }
+    JvcDao objReader;
 
     // treeIndex and treeName are the same thing
     void traverseAll(filesystem::path currentPath, int treeIndex, const set<string> &ignores)
@@ -95,7 +79,7 @@ private:
 
         // Get all entries of the current tree
         map<string, FileEntry> entries;
-        jvcDao.getTreeEntries(entries, treeName);
+        objReader.getTreeEntries(entries, treeName);
 
         // Get access to all entries of the current directory
         filesystem::directory_iterator it(currentPath);
@@ -151,7 +135,7 @@ private:
                     }
 
                     // If it's a file, compare it to its blob. If it's different, then changesDetected
-                    else if (jvcDao.diff(entry_path.u8string(), matchPos->second.codeName))
+                    else if (objReader.diff(entry_path.u8string(), matchPos->second.codeName))
                     {
                         // cout << "Got here!" << endl;
                         changesDetected += 1;
@@ -218,10 +202,10 @@ private:
             traverseAll(currentPath, treeIndex, ignores);
 
             // Creating first version object
-            jvcDao.createVersionObject(to_string(versionIndex), "NULL", to_string(treeIndex), "Initial save");
+            objReader.createVersionObject(to_string(versionIndex), "NULL", to_string(treeIndex), "Initial save");
 
             // Create the head file for branch master
-            jvcDao.initHead("master", to_string(versionIndex));
+            objReader.initHead("master", to_string(versionIndex));
         }
 
         // If the version tracker for the current branch exists
@@ -229,12 +213,12 @@ private:
         {
 
             // Read the most recent version's hashed name
-            string mrVersionIndex = jvcDao.getHead("master");
+            string mrVersionIndex = objReader.getHead("master");
 
             if (mrVersionIndex != "NULL")
             {
                 // TODO: Get the tree from the version object
-                Version version = jvcDao.getVersion(mrVersionIndex);
+                Version version = objReader.getVersion(mrVersionIndex);
                 
                 if (version.versionIndex != "error") {
                     // TODO: Traverse the tree and the current directory together
@@ -245,10 +229,10 @@ private:
                         int newVersionIndex = idxSplr.getNextIndex(0);
 
                         // Creating a new version object
-                        jvcDao.createVersionObject(to_string(newVersionIndex), mrVersionIndex, newTreeName, "Version " + to_string(newVersionIndex));
+                        objReader.createVersionObject(to_string(newVersionIndex), mrVersionIndex, newTreeName, "Version " + to_string(newVersionIndex));
 
                         // Update head/master
-                        jvcDao.updateHead("master", to_string(newVersionIndex));
+                        objReader.updateHead("master", to_string(newVersionIndex));
                     }
                     else
                     {
@@ -285,7 +269,7 @@ public:
         
         // Prepare the ignores set
         set<string> ignores;
-        getIgnores(ignores);
+        objReader.getIgnores(ignores);
 
         // Meat and butter of the functionality
         saveChanges(".\\", ignores);
