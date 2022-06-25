@@ -1,0 +1,32 @@
+Name: Jeremy Duong
+Project Title: jvc (Jeremy's Version Control)
+
+Team Members: Jeremy Duong (Functional Analyst, Software Engineer, QA)
+
+Overall Status:
+	13/17 must-have requirements completed (But the most important and difficult ones are done. Other requirements are superficial)
+	0/4 stretch requirements completed
+
+Number of hours worked since last update: 20 hours
+Number of hours worked on the project thus far: 90 hours
+Total number of hours anticipated for completion: 200 hours
+
+Accomplishments:
+- Implemented "jvc revert" - 80% completion
+- Encapsulated jvc revert in its own class
+
+Challenges:
+- Figure out how jvc revert works with ignore. Would reverting to a version mess with ignored files? If in the newest version a file
+	is ignored, but in the version to be reverted to it is not ignored, what happens when the forward revert happens?
+- Figure out how to organize header files and .cpp files.
+
+Plans / Goals for next week (Same as last week):
+- Finish "jvc revert"
+- (PRIORITY) Implement and finish "jvc history"
+
+Accountability plan: (What is your plan to keep yourself honest and follow through with the goals that you have outlined?)
+- Keep up with my weekly report. Make sure to include specific progress towards goals set.
+- Report the same thing to brother Manley.
+
+Other comments:
+- Everything will be done in an object oriented fashing from now on.
