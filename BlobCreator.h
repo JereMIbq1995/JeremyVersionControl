@@ -75,6 +75,12 @@ public:
         }
         else
         {
+            if (!fout.is_open()) {
+                cout << "fout failed " + filePath << endl;
+            }
+            if (!fin.is_open()) {
+                cout << "fin failed. file path: .jvc/obj/blob/" + blobName + "\n";
+            }
             printf("Blob does not exist or failed to open file\n");
         }
         fout.close();
