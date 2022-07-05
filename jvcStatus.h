@@ -14,7 +14,8 @@
 using namespace std;
 
 // This should be a member variable of the functionality class once completed
-class JvcStatus {
+class JvcStatus
+{
 
 private:
     JvcDao objReader;
@@ -41,7 +42,7 @@ private:
     }
 
     void traverseTreeWithDir(filesystem::path currentPath, string treeName, vector<string> &newFiles, vector<string> &deletedFiles,
-                            vector<string> &modifiedFiles, const set<string> &ignores)
+                             vector<string> &modifiedFiles, const set<string> &ignores)
     {
         // Get all the fileNames and foldernames mentioned in the current tree
         map<string, FileEntry> entries;
@@ -109,7 +110,7 @@ private:
     }
 
     void getStatus(filesystem::path currentPath, vector<string> &newFiles, vector<string> &deletedFiles,
-                vector<string> &modifiedFiles, const set<string> &ignores)
+                   vector<string> &modifiedFiles, const set<string> &ignores)
     {
 
         // For now there's only master. However, this should change
@@ -125,42 +126,28 @@ private:
         else
         {
             // TODO: traverse and compare file to its blob...
-            ifstream fin;
-            fin.open("./.jvc/head/master");
+            string mostRecentVersionIndex = objReader.getHead("master");
 
-            if (fin.is_open())
+            if (mostRecentVersionIndex != "NULL")
             {
 
-                // Read the most recent commit's hashed name
-                string commitIndex;
-                fin >> commitIndex;
-
                 // TODO: Get the tree from the commit object
-                ifstream commitObjIn;
-                commitObjIn.open("./.jvc/obj/version/" + commitIndex);
+                Version versionObject = objReader.getVersion(mostRecentVersionIndex);
 
-                if (commitObjIn.is_open())
+                if (versionObject.versionIndex != "error")
                 {
-                    string parent;
-                    commitObjIn >> parent;
-                    string treeName = "";
-                    commitObjIn >> treeName;
-
                     // TODO: Traverse the tree and the current directory together
-                    traverseTreeWithDir(filesystem::path(currentPath), treeName, newFiles, deletedFiles, modifiedFiles, ignores);
+                    traverseTreeWithDir(filesystem::path(currentPath), versionObject.treeIndex, newFiles, deletedFiles, modifiedFiles, ignores);
                 }
                 else
                 {
                     cout << "Could not open commit object" << endl;
                 }
-                commitObjIn.close();
             }
             else
             {
                 cout << "Could not open branch file" << endl;
             }
-
-            fin.close();
         }
     }
 
@@ -205,8 +192,8 @@ private:
     }
 
 public:
-
-    bool unsavedChangesExist() {
+    bool unsavedChangesExist()
+    {
         // Prepare the 3 categories of files
         vector<string> newFiles;
         vector<string> deletedFiles;
@@ -218,17 +205,20 @@ public:
 
         // Meat and butter of the functionality
         getStatus(".\\", newFiles, deletedFiles, modifiedFiles, ignores);
-        if (newFiles.size() + deletedFiles.size() + modifiedFiles.size() > 0) {
+        if (newFiles.size() + deletedFiles.size() + modifiedFiles.size() > 0)
+        {
             return true;
         }
-        else {
+        else
+        {
             return false;
         }
     }
 
     void execute()
     {
-        if (!std::filesystem::exists(".jvc")) {
+        if (!std::filesystem::exists(".jvc"))
+        {
             std::cout << "Error : Not a jvc repository\n";
             return;
         }
