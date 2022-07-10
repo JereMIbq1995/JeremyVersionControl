@@ -239,11 +239,6 @@ public:
 
     void execute()
     {
-        if (!std::filesystem::exists(".jvc"))
-        {
-            std::cout << "Error : Not a jvc repository\n";
-            return;
-        }
         // Prepare the 3 categories of files
         vector<string> newFiles;
         vector<string> deletedFiles;
