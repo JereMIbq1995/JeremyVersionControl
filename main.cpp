@@ -9,6 +9,7 @@
 #include "jvcStatus.h"
 #include "jvcSave.h"
 #include "jvcRevert.h"
+#include "jvcHistory.h"
 
 
 void init() {
@@ -43,7 +44,8 @@ void revert(int argc, char* argv[]) {
 }
 
 void history() {
-    std::cout << "Showing history...\n";
+    JvcHistory jvcHistoryExplorer;
+    jvcHistoryExplorer.execute();
 }
 
 void execute(int argc, char* argv[]) {
