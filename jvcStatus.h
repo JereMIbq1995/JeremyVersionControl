@@ -9,6 +9,7 @@
 #include <vector>
 #include <set>
 #include <map>
+// #include <windows.h>
 #include "FileEntry.h"
 #include "JvcDao.h"
 using namespace std;
@@ -168,31 +169,42 @@ private:
         int dSize = deletedFiles.size();
         int mSize = modifiedFiles.size();
 
+        // HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
         if (nSize > 0)
         {
             cout << "NEW files:\n";
+            // SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
             for (const string newFile : newFiles)
             {
-                cout << "\t\033[31m new: " << newFile << "\033[0m\n";
+                // printf("\tnew: " + newFile + "\n");
+
+                cout << "\tnew: " << newFile << "\n";
             }
+            // SetConsoleTextAttribute(hConsole, NORMAL_PRINT);
         }
 
         if (mSize > 0)
         {
             cout << "MODIFIED files:\n";
+            // SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
             for (const string modifiedFile : modifiedFiles)
             {
-                cout << "\t\033[31m modified: " << modifiedFile << "\033[0m\n";
+                // printf("\t\x1b[31m modified: %s \x1b[0m\n", modifiedFile);
+                cout << "\tmodified: " << modifiedFile << "\n";
             }
         }
 
         if (dSize > 0)
         {
             cout << "DELETED files:\n";
+            // SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
             for (const string deletedFile : deletedFiles)
             {
-                cout << "\t\033[31m deleted: " << deletedFile << "\033[0m\n";
+                // printf("\t\x1b deleted: %s \x1b \n", deletedFile);
+                cout << "\tdeleted: " << deletedFile << "\n";
             }
+            // SetConsoleTextAttribute(hConsole, NORMAL_PRINT);
         }
 
         if (nSize + mSize + dSize == 0)
