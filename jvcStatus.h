@@ -151,6 +151,16 @@ private:
         }
     }
 
+    void displayVersionInfo(string currentVersion) {
+
+        if (currentVersion == "NULL") {
+            cout << "Repository is new with no saved version.\n";
+        }
+        else {
+            cout << "Current version: Version '" << currentVersion << "'.\n";
+        }
+    }
+
     void displayResult(const vector<string> &newFiles, const vector<string> &deletedFiles, const vector<string> &modifiedFiles)
     {
 
@@ -234,7 +244,11 @@ public:
         // Meat and butter of the functionality
         getStatus(".\\", newFiles, deletedFiles, modifiedFiles, ignores);
 
+        // Get current version
+        string currentVersion = objReader.getHead("master");
+
         // Print out all untracked files
+        displayVersionInfo(currentVersion);
         displayResult(newFiles, deletedFiles, modifiedFiles);
     }
 };

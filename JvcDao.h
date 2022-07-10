@@ -158,8 +158,12 @@ public:
         {
             while (fin >> entry.type)
             {
+                // Get the code name, either blob name or tree name
                 fin >> entry.codeName;
-                fin >> entryName;
+
+                // ignore the space right after the codeName
+                fin.ignore();
+                getline(fin, entryName);
 
                 entries.insert(pair(entryName, entry));
             }
