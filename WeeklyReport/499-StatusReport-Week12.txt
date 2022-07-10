@@ -1,0 +1,35 @@
+Name: Jeremy Duong
+Project Title: jvc (Jeremy's Version Control)
+
+Team Members: Jeremy Duong (Functional Analyst, Software Engineer, QA)
+
+Overall Status:
+	16.9/17 must-have requirements completed (The 0.1 is the formating of the history display that needs to be done)
+	0/4 stretch requirements completed
+
+Number of hours worked since last update: 7 hours
+Number of hours worked on the project thus far: 102 hours
+Total number of hours anticipated for completion: 200 hours
+
+Accomplishments:
+- Fixed a bug in JvcDao that mess up when files have spaces in their names. This allows "jvc revert" to work correctly.
+- "jvc status" now shows current Version
+- "jvc save" now allows customized message as the 3rd argument
+- Implemented "jvc history" (90% completed)
+
+Challenges:
+- Figure out how to organize header files and .cpp files.
+
+Plans / Goals for next week (Same as last week):
+- (PRIORITY) Finish "jvc history" by making the history display looks nicer and with more details
+- Clean up the code:
+	+ Put appropriate comments in the code
+	+ Maybe use a make file?
+	+ Separating templates from implementation: Moving code implementations from .h files to .cpp files (not really important but this makes the code looks nice)
+
+Accountability plan: (What is your plan to keep yourself honest and follow through with the goals that you have outlined?)
+- Keep up with my weekly report. Make sure to include specific progress towards goals set.
+- Report the same thing to brother Manley.
+
+Other comments:
+- N/A
