@@ -188,7 +188,7 @@ private:
         return treeName;
     }
 
-    void saveChanges(filesystem::path currentPath, const set<string> &ignores)
+    void saveChanges(filesystem::path currentPath, const set<string> &ignores, std::string message)
     {
 
         // For now there's only master. However, this should change
@@ -202,7 +202,8 @@ private:
             traverseAll(currentPath, treeIndex, ignores);
 
             // Creating first version object
-            objReader.createVersionObject(to_string(versionIndex), "NULL", to_string(treeIndex), "Initial save");
+            std::string versionMessage = message == "" ? "Initial save" : message;
+            objReader.createVersionObject(to_string(versionIndex), "NULL", to_string(treeIndex), versionMessage);
 
             // Create the head file for branch master
             objReader.initHead("master", to_string(versionIndex));
@@ -229,7 +230,8 @@ private:
                         int newVersionIndex = idxSplr.getNextIndex(0);
 
                         // Creating a new version object
-                        objReader.createVersionObject(to_string(newVersionIndex), mrVersionIndex, newTreeName, "Version " + to_string(newVersionIndex));
+                        std::string versionMessage = message == "" ? ("Version " + to_string(newVersionIndex)) : message;
+                        objReader.createVersionObject(to_string(newVersionIndex), mrVersionIndex, newTreeName, versionMessage);
 
                         // Update head/master
                         objReader.updateHead("master", to_string(newVersionIndex));
@@ -259,20 +261,14 @@ public:
 
     }
 
-    void execute() {
-        
-        if (!std::filesystem::exists(".jvc"))
-        {
-            std::cout << "Error : Not a jvc repository\n";
-            return;
-        }
-        
+    void execute(std::string message = "") {
+
         // Prepare the ignores set
         set<string> ignores;
         objReader.getIgnores(ignores);
 
         // Meat and butter of the functionality
-        saveChanges(".\\", ignores);
+        saveChanges(".\\", ignores, message);
     }
 };
 #endif

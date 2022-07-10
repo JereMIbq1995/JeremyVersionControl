@@ -12,25 +12,49 @@
 #include "jvcHistory.h"
 
 
+bool notJvcRepo() {
+    if (!std::filesystem::exists(".jvc"))
+    {
+        std::cout << "Error : Not a jvc repository\n";
+        return true;
+    }
+    return false;
+}
+
 void init() {
     JvcInit jvcInitializer;
     jvcInitializer.execute();
 }
 
 void status() {
+    if (notJvcRepo()) {
+        return;
+    }
     JvcStatus jvcStatusDisplayer;
     jvcStatusDisplayer.execute();
 }
 
-void save() {
+void save(int argc, char* argv[]) {
+    if (notJvcRepo()) {
+        return;
+    }
+
     JvcSave jvcSaver;
-    jvcSaver.execute();
+    if (argc == 3) {
+        jvcSaver.execute(std::string(argv[2]));
+    }
+    else if (argc == 2) {
+        jvcSaver.execute();
+    }
+    else {
+        std::cout << "Usage: jvc save <optional-message>. The optional message is a string wrapped inside double quotes.\n";
+        return;
+    }
 }
 
 void revert(int argc, char* argv[]) {
-    
-    if (!std::filesystem::exists(".jvc")) {
-        std::cout << "Error: Not a jvc repository.\n";
+
+    if (notJvcRepo()) {
         return;
     }
 
@@ -44,34 +68,11 @@ void revert(int argc, char* argv[]) {
 }
 
 void history() {
+    if (notJvcRepo()) {
+        return;
+    }
     JvcHistory jvcHistoryExplorer;
     jvcHistoryExplorer.execute();
-}
-
-void execute(int argc, char* argv[]) {
-    std::string command(argv[1]);
-
-    if (command == "init") {
-        init();
-    }
-    else if (command == "status")
-    {
-        status();
-    }
-    else if (command == "save")
-    {
-        save();
-    }
-    else if (command == "revert")
-    {
-        revert(argc, argv);
-    }
-    else if (command == "history") {
-        history();
-    }
-    else {
-        std::cout << "Error: Command '" << command << "' does not exist!\n";
-    }
 }
 
 void displayUsage() {
@@ -84,7 +85,32 @@ int main(int argc, char* argv[]) {
         displayUsage();
     }
     else {
-        execute(argc, argv);
+        std::string command(argv[1]);
+
+        if (command == "init")
+        {
+            init();
+        }
+        else if (command == "status")
+        {
+            status();
+        }
+        else if (command == "save")
+        {
+            save(argc, argv);
+        }
+        else if (command == "revert")
+        {
+            revert(argc, argv);
+        }
+        else if (command == "history")
+        {
+            history();
+        }
+        else
+        {
+            std::cout << "Error: Command '" << command << "' does not exist!\n";
+        }
     }
 
     return 0;
