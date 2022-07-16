@@ -15,7 +15,7 @@
 bool notJvcRepo() {
     if (!std::filesystem::exists(".jvc"))
     {
-        std::cout << "Error : Not a jvc repository\n";
+        std::cout << "Error: Not a jvc repository\n";
         return true;
     }
     return false;
@@ -76,7 +76,15 @@ void history() {
 }
 
 void displayUsage() {
-    std::cout << "Usage...." << std::endl;
+    std::cout << "Usage: jvc <command> <optional-or-required-parameter>" << std::endl;
+    std::cout << "There are 5 simple commands:" << std::endl;
+    std::cout << "\tinit: Initialize a folder as a jvc repository." << std::endl;
+    std::cout << "\tstatus: Show all changes to the current repository since last save." << std::endl;
+    std::cout << "\tsave: Save all changes to the current repository since last save." << std::endl;
+    std::cout << "\t\t<optional-parameter>: the optional parameter is the message associated with the save." << std::endl;
+    std::cout << "\thistory: See the version history from the initial version (index 0) up to the current version." << std::endl;
+    std::cout << "\trevert: Revert back to the version with index specified in the parameter." << std::endl;
+    std::cout << "\t\t<required-parameter>: The parameter is the index of the version that the repo is to be reverted to." << std::endl;
 }
 
 int main(int argc, char* argv[]) {
