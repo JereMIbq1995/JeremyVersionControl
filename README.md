@@ -46,3 +46,14 @@ that has index '3', you would run the command:<br>
 &emsp; Notice that the version index is required to run this command. Without it, the command will not do anything and display a usage or <br>
 an error message. It also is recommended that you use <b>jvc history</b> to look at the save history to familiarize yourself with the<br>
 version index system before running the revert command.
+
+
+<b> 6. ignore </b><br>
+To specify which file should be ignored by jvc, create a ".jvcignore" file and put the paths of all to be ignored files or folders <br>
+inside this file, sparated by the return character. <br>
+This is very similar to ".gitignore"<br>
+CAUTION: This feature is still a little immature. So to avoid bugs, please make sure that the format of the paths put inside .jvcignore <br>
+are as simple and intiutive as possible :) <br>
+
+
+<h1> Have fun! And thank you for checking out JVC! :)</h1>
