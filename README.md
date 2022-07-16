@@ -1,6 +1,7 @@
-<h2>JVC (Jeremy's Version Control)</h2>
+<h1>JVC (Jeremy's Version Control)</h1>
+<br>
 
-<h3>Compilation</h3>
+<h2>Compilation:</h2>
 
 <b>Requirements:</b> <br>
 &emsp; - g++ version 11.2.0 (This is the version I used to develop the program. Older or newer versions might work but no guarantee)
@@ -17,7 +18,7 @@
 &emsp; Finally, open a test folder and test the 5 functionalities that JVC has: <b>init</b>, <b>status</b>, <b>save</b>, <b>revert</b>, and <b>history</b><br>
 
 
-<h3>Usage:</h3>
+<h2>Usage:</h2>
 
 <b> 1. init </b><br>
 &emsp; From any folder, open the command line and run <b>jvc init</b>. This is to initialize a folder as a jvc repository <br>
