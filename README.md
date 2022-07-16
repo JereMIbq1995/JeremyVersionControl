@@ -1,5 +1,6 @@
 <h1>JVC (Jeremy's Version Control)</h1>
 <br>
+JVC is another crazy version control like git. It's very similar to git. But much simpler to use :) <br>
 
 <h2>Compilation:</h2>
 
