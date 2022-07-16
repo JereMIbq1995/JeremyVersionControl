@@ -5,16 +5,16 @@
 <b>Requirements:</b> <br>
 &emsp; - g++ version 11.2.0 (This is the version I used to develop the program. Older or newer versions might work but no guarantee)
 
-<b>Step 1:</b>
-&emsp; Run command: <b>g++ main.cpp -o bin/jvc.exe</b>
-&emsp; Once this command is ran, a bin folder in the project folder will be created
+<b>Step 1:</b><br>
+&emsp; Run command: <b>g++ main.cpp -o bin/jvc.exe</b><br>
+&emsp; Once this command is ran, a bin folder in the project folder will be created<br>
 
-<b>Step 2:</b>
+<b>Step 2:</b><br>
 &emsp; Add the full path of the "./bin" folder to the PATH variable of the environment <br>
-&emsp; so that jvc can be used anywhere on the computer
+&emsp; so that jvc can be used anywhere on the computer <br>
 
-<b>Step 3:</b>
-&emsp; Finally, open a test folder and test the 5 functionalities that JVC has: <b>init</b>, <b>status</b>, <b>save</b>, <b>revert</b>, and <b>history</b>
+<b>Step 3:</b><br>
+&emsp; Finally, open a test folder and test the 5 functionalities that JVC has: <b>init</b>, <b>status</b>, <b>save</b>, <b>revert</b>, and <b>history</b><br>
 
 
 <h3>Usage:</h3>
