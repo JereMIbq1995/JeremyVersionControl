@@ -138,7 +138,7 @@ public:
         }
         else {
             version.versionIndex = "error";
-            cout << "Error: could not open version object for version '" << versionIndex << "'.\n";
+            cout << "Error: could not open version object for version '" << versionIndex << "'. Version does NOT exist! Use 'jvc history' to look at version indices history.\n";
         }
         fin.close();
         return version;
