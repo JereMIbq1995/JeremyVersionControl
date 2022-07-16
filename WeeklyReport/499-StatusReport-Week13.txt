@@ -1,0 +1,40 @@
+Name: Jeremy Duong
+Project Title: jvc (Jeremy's Version Control)
+
+Team Members: Jeremy Duong (Functional Analyst, Software Engineer, QA)
+
+Overall Status:
+	17/17 must-have requirements completed
+	0/4 stretch requirements completed
+
+Number of hours worked since last update: 5 hours
+Number of hours worked on the project thus far: 107 hours
+Total number of hours anticipated for completion: 200 hours
+
+Accomplishments:
+- Cleaned up some error messages
+- Finished up the project
+- Project completion interview
+
+Challenges:
+- As of the stretch requirements, since branching can be done by a revert and a save, I feel like it's not
+  neccessary to implement a separated branching functionality. It can certainly be done, but would only make
+  the whole project more complicated for new users, which is against the purpose of jvc from the beginnning.
+
+- I chose not to implement merging functionality because first of all, branching is not implemented, and second,
+  merging is really involved. It would take a lot of time to complete, and it would also undermine the purpose
+  of making things simple that jvc has.
+
+Plans / Goals for next week (Same as last week):
+- Show off the project to my peers and friends and ask for feedback :)
+
+Accountability plan: (What is your plan to keep yourself honest and follow through with the goals that you have outlined?)
+- Keep up with my weekly report. Make sure to include specific progress towards goals set.
+- Report the same thing to brother Manley.
+
+Other comments:
+
+- It's been a great semester and I've learned so much about how version control works, especially about git. I have also
+been able to implement my own ideas on how a few things should work that's different from git. I was super cool to see
+the growth and the accomplishments I've had while working on JVC. I'm proud of JVC and what it can do and probably won't stop
+bragging about it for a while once it's completed. I'm excited to move on to something new.
