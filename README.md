@@ -2,7 +2,7 @@
 
 <h3>Compilation</h3>
 
-<b>Requirements:</b>
+<b>Requirements:</b> <br>
 &emsp; - g++ version 11.2.0 (This is the version I used to develop the program. Older or newer versions might work but no guarantee)
 
 <b>Step 1:</b>
