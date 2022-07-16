@@ -230,7 +230,7 @@ private:
                         int newVersionIndex = idxSplr.getNextIndex(0);
 
                         // Creating a new version object
-                        std::string versionMessage = message == "" ? ("Version " + to_string(newVersionIndex)) : message;
+                        std::string versionMessage = message == "" ? ("Saved version with index " + to_string(newVersionIndex)) : message;
                         objReader.createVersionObject(to_string(newVersionIndex), mrVersionIndex, newTreeName, versionMessage);
 
                         // Update head/master
