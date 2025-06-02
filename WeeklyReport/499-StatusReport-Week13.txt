@@ -35,6 +35,6 @@ Accountability plan: (What is your plan to keep yourself honest and follow throu
 Other comments:
 
 - It's been a great semester and I've learned so much about how version control works, especially about git. I have also
-been able to implement my own ideas on how a few things should work that's different from git. I was super cool to see
+been able to implement my own ideas on how a few things should work that's different from git. It was super cool to see
 the growth and the accomplishments I've had while working on JVC. I'm proud of JVC and what it can do and probably won't stop
 bragging about it for a while once it's completed. I'm excited to move on to something new.
